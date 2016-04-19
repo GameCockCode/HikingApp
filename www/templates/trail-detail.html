@@ -1,6 +1,6 @@
 <ion-view view-title="Trail Detail">
   <ion-content class="padding">
-     <div class="list card">
+     <div class="list card" id="TrailDetailDiv">
 
         <div class="item item-avatar">
             <h2>{{trail.get("Name")}}</h2>
@@ -17,20 +17,30 @@
                 This test trail is approximately {{trail.get("length")}} miles long. On average, it 
                 takes {{trail.get("hike_hours")}} hour(s) to hike.
             </p>
-                        <p>
-                <a href="#/tab/trails/{{trail.id}}/comments" class="subdued">Comments</a>
+            
+            <p>
                 <a href="#/tab/trails/{{trail.id}}/geoloc" class="subdued">View in map</a>
-
                 <a href="#" class="subdued" ng-click="addToProposal(trail)" ng-show="authorize()">Add to Hiked Trails</a>
-
-                
-               
             </p>
         </div>
-        <div class="spacer"></div>
-        <div class="spacer"></div>
-        <div class="spacer"></div>
-
     </div>
+    <div id="CommentDiv">
+        <a class="button button-small" href="#/tab/trails/{{trail.id}}/comments/addcomment" ng-show="authorize()">Add Comment</a>
+        <div ng-repeat="comment in comments">
+            
+            <div class="item item-avatar">
+                <img src="{{comment.get('poster').get('profile_picture').url()}}">
+                <h2>{{comment.get('poster').get('username')}}</h2>
+            </div>
+            <div class="item item-text-wrap">
+                {{comment.get("comment")}}
+            </div>
+        </div>   
+
+        <div ng-show="!authorize()">
+            <a class="button button-block button-positive" href="#/tab/signin">Please Login to Add a Comment</a>
+        </div> 
+    </div>  
   </ion-content>
+
 </ion-view>

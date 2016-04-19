@@ -38,22 +38,13 @@ angular.module('starter.services', [])
 .factory('Comments', function() {
 
   var comments = [];
-  var CommentObject = Parse.Object.extend("Comment");
-  var query = new Parse.Query(CommentObject);
-    query.find({
-    success: function(results) {
-        for (var i = 0; i < results.length; i++) {
-            comments.push(results[i]);
-        }
-    },
-    error: function(error) {
-        console.log("Error: " + error.code + " " + error.message);
-    }
-    });
 
   return {
     all: function() {
       return comments;
+    },
+    setComments: function(newcomments) {
+        comments = newcomments;
     },
     get: function(trailId) {
       var trailcomments =[];
@@ -86,18 +77,6 @@ angular.module('starter.services', [])
 .factory('Trails', function() {
 
     var trails = [];
-   /* var TrailObject = Parse.Object.extend("Trail");
-    var query = new Parse.Query(TrailObject);
-    query.find({
-    success: function(results) {
-        for (var i = 0; i < results.length; i++) {
-            trails.push(results[i]);
-        }
-    },
-    error: function(error) {
-        console.log("Error: " + error.code + " " + error.message);
-    }
-    });*/
 
     return {
     all: function() {

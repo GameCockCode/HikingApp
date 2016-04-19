@@ -277,7 +277,25 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('TrailDetailCtrl', function($scope, $state, $stateParams, $http, Trails, Comments, Users) {
     
-    $scope.comments = Comments.get($stateParams.trailId);
+    function getCommentData(){
+        var comments = [];
+        var CommentObject = Parse.Object.extend("Comment");
+        var query = new Parse.Query(CommentObject);
+        query.find({
+        success: function(results) {
+           /* for (var i = 0; i < results.length; i++) {
+                comments.push(results[i]);
+            }*/
+            Comments.setComments(results);
+            $scope.comments = Comments.get($stateParams.trailId);
+            $scope.$apply();
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+        });
+    }
+    getCommentData();
     $scope.trail = Trails.get($stateParams.trailId);
     $scope.user = Users.getCurrentUser();
     var self=this;
