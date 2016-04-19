@@ -1,0 +1,27 @@
+<ion-view title="Sign In">
+    <nav-page hide-back-button="true">
+        </nav-page>
+    <ion-content padding="true" class="has-header">
+      
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input type="text" placeholder="enter your username..." ng-model="data.username">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" placeholder="enter your password..." ng-model="data.password">
+                </label>
+            </ion-list>
+            <div class="item button-bar">
+            <a class="button button-stable " ng-click="loginEmail()">Sign In</a>
+
+            <div class="spacer"></div>
+ 
+            <a class="button button-stable " ui-sref="tab.signup">Register</a>
+        </div>
+       
+
+
+    </ion-content>
+</ion-view>

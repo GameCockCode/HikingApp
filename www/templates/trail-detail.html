@@ -1,0 +1,36 @@
+<ion-view view-title="Trail Detail">
+  <ion-content class="padding">
+     <div class="list card">
+
+        <div class="item item-avatar">
+            <h2>{{trail.get("Name")}}</h2>
+            <p>{{trail.get("city")}}, {{trail.get("state")}}</p>
+        </div>
+
+        <div class="item item-body">
+            <a href="#/tab/trails/{{trail.id}}/pictures">
+                <img class="full-image" height="200px" width="200px" src="{{trail.get('picture').url()}}">
+            </a>
+                
+            <p>  
+                {{trail.get("Name")}} is located in {{trail.get("city")}}, {{trail.get("state")}}. 
+                This test trail is approximately {{trail.get("length")}} miles long. On average, it 
+                takes {{trail.get("hike_hours")}} hour(s) to hike.
+            </p>
+                        <p>
+                <a href="#/tab/trails/{{trail.id}}/comments" class="subdued">Comments</a>
+                <a href="#/tab/trails/{{trail.id}}/geoloc" class="subdued">View in map</a>
+
+                <a href="#" class="subdued" ng-click="addToProposal(trail)" ng-show="authorize()">Add to Hiked Trails</a>
+
+                
+               
+            </p>
+        </div>
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+        <div class="spacer"></div>
+
+    </div>
+  </ion-content>
+</ion-view>

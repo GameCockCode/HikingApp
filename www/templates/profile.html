@@ -1,0 +1,42 @@
+<ion-view view-title="Profile" hide-back-button="true" >
+
+<ion-nav-buttons side="right">
+   <a class="button button-small" ng-click="logOut()" ng-show="authorize()">Log out</a>
+</ion-nav-buttons> 
+
+  <ion-content class="padding">
+
+
+   <div class="card">
+  <div class="item item-divider">
+    <h2> User name: <span>{{user.get("username")}} </span></h2>
+    
+  </div>
+
+   <div class="item item-text-wrap">
+    <h2>Email: <span>{{user.get("email")}} </span></h2>
+    
+  </div>
+
+   <div class="item item-text-wrap">
+    <h2>Member since: <span>{{user.get("createdAt").toString().substring(0, 15)}} </span></h2>
+    
+  </div>
+  </div>
+
+  <div class="spacer"></div>
+	<div >
+		 <h4>Trails I have Hiked:</h4>
+     <ion-list>
+      <ion-item  ng-repeat="proposal in proposals track by $index"  >
+            
+            <h3>{{proposal.get("trail").get("Name")}}</h3>
+            <p> Proposal Date: {{proposal.get("date").toString().substring(0, 10)}} </p>
+     
+      </ion-item>
+
+       
+   </div>
+  
+  </ion-content>
+</ion-view>

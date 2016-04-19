@@ -1,0 +1,21 @@
+<ion-view view-title="Comments" >
+<ion-nav-buttons side="right">
+  <a class="button button-small" href="#/tab/trails/{{trail.id}}/comments/addcomment" ng-show="authorize()">Add</a>
+</ion-nav-buttons> 
+  <ion-content class="padding">
+      <div ng-repeat="comment in comments">
+        <div class="item item-avatar">
+            <img src="{{comment.get('poster').get('profile_picture').url()}}">
+            <h2>{{comment.get('poster').get('username')}}</h2>
+        </div>
+        <div class="item item-text-wrap">
+            {{comment.get("comment")}}
+        </div>
+      </div>   
+      
+      <div ng-show="!authorize()">
+          <a class="button button-block button-positive" href="#/tab/signin">Please Login to Add a Comment</a>
+      </div> 
+  </ion-content>
+</ion-view>
+  

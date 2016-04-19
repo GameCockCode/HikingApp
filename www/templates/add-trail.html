@@ -1,0 +1,104 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="Add Trail" ng-controller="AddTrailCtrl as controller">
+
+
+<ion-nav-buttons side="right">
+  <button class="button button-small" ng-click="save()">Save</button>
+</ion-nav-buttons>  
+
+
+  <ion-content class="padding">
+
+ <div class="list">
+    
+      <label class="item item-input">
+      <span class="input-label">Trail name</span>
+      <input type="text" placeholder="enter Name" ng-model="controller.trailName"  required>
+      </label>
+
+      <label class="item item-input">
+      <span class="input-label">Length</span>
+      <input type="number" placeholder="Roundtrip Length" ng-model="controller.trailLength" min="0.01" required>
+      </label>
+
+      <label class="item item-input">
+      <span class="input-label">Hours</span>
+      </span>
+      <input type="number" placeholder="enter Hike Hours" ng-model="controller.hikeHours" min="0.01" required>
+      </label>
+
+       <label class="item item-input">
+      <span class="input-label">city</span>
+      </span>
+      <input type="text" placeholder="enter city" ng-model="controller.city" required>
+      </label>
+
+     
+
+      <label class="item item-input item-select item-light">
+      <div class="input-label">State</div>
+     
+     <select ng-model="controller.state" optionLabel="select category" required>
+      <option value="SC">SC</option>
+      <option value="NC">NC</option>
+      <option value="GA" >GA</option>
+       <option value="WA" >WA</option>
+    </select>
+      </label>
+
+        <label class="item item-input">
+      <span class="input-label">zip</span>
+      </span>
+      <input type="text" placeholder="enter zip" ng-model="controller.zip" required>
+      </label>
+
+     
+
+      <label class="item item-input">
+      <span class="input-label">latitude</span>
+      <input type="number" placeholder="latitude" ng-model="controller.latitude" required>
+      </label>
+
+    <label class="item item-input">
+      <span class="input-label">longitude</span>
+      <input type="number" placeholder="longitude" ng-model="controller.longitude" required>
+      </label>
+
+
+       <div class="item button-bar">
+     
+       <button class="button button-small button-outline button-dark icon-center ion-camera" ng-click="takeTrailPhoto()" >
+            Take image
+        </button>
+
+        <button class="button button-small button-outline button-dark icon-center ion-camera" ng-click="chooseTrailPhoto()">
+            Select image
+        </button>
+       
+         </div>
+
+         <div class="item item-image">
+            <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+        </div>
+
+      <!--    <center>
+        <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}" width="200"  height="300"></center>
+       -->
+       
+       
+
+         
+
+
+       
+    
+    
+      </div>
+   
+  </ion-content>
+</ion-view>

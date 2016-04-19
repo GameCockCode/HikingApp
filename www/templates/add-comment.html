@@ -1,0 +1,16 @@
+<ion-view view-title="Add Comment" ng-controller="TrailDetailCtrl as controller">
+    
+  <ion-nav-buttons side="right">
+    <button class="button button-small" ng-click="save()">Save</button>
+  </ion-nav-buttons>  
+  
+  <ion-content class="padding">
+    <div class="list">
+        <label class="item item-input">
+            <span class="input-label">Comment:</span>
+            <input type="text" placeholder="Enter Comment" ng-model="controller.comment"  required>
+        </label> 
+      </div>
+  </ion-content>
+  
+</ion-view>
