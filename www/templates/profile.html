@@ -1,42 +1,28 @@
 <ion-view view-title="Profile" hide-back-button="true" >
 
-<ion-nav-buttons side="right">
-   <a class="button button-small" ng-click="logOut()" ng-show="authorize()">Log out</a>
-</ion-nav-buttons> 
+  <ion-nav-buttons side="right">
+    <a class="button button-small" ng-click="logOut()">Log out</a>
+  </ion-nav-buttons> 
 
-  <ion-content class="padding">
-
-
-   <div class="card">
-  <div class="item item-divider">
-    <h2> User name: <span>{{user.get("username")}} </span></h2>
+  <ion-content class="padding">  
+    <div class="item item-avatar">
+        <img src="{{user.get('profile_picture').url()}}">
+        <h2>Hello, {{user.get('username')}}!</h2>
+        <p>Member since: {{user.get("createdAt").toString().substring(3, 15)}}</p>
+    </div>
     
-  </div>
-
-   <div class="item item-text-wrap">
-    <h2>Email: <span>{{user.get("email")}} </span></h2>
+    <div class="spacer"></div>
     
-  </div>
-
-   <div class="item item-text-wrap">
-    <h2>Member since: <span>{{user.get("createdAt").toString().substring(0, 15)}} </span></h2>
-    
-  </div>
-  </div>
-
-  <div class="spacer"></div>
-	<div >
-		 <h4>Trails I have Hiked:</h4>
-     <ion-list>
-      <ion-item  ng-repeat="proposal in proposals track by $index"  >
-            
-            <h3>{{proposal.get("trail").get("Name")}}</h3>
-            <p> Proposal Date: {{proposal.get("date").toString().substring(0, 10)}} </p>
-     
-      </ion-item>
-
-       
-   </div>
+    <div >
+      <h4>Trails I have Hiked:</h4>
+      <ion-list>
+        
+        <ion-item  ng-repeat="proposal in proposals track by $index" href="#/tab/trails/{{proposal.get('trail').id}}" >  
+          <h3>{{proposal.get("trail").get("Name")}}</h3>
+          <p>Date Added: {{proposal.get("date").toString().substring(0, 15)}} </p>
+        </ion-item>
+      </ion-list>
+    </div>
   
   </ion-content>
 </ion-view>

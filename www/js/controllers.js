@@ -327,47 +327,30 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('ProfileCtrl', function($scope, $state, $stateParams, Trails, Users) {
     
-   
+     
     $scope.user = Users.getCurrentUser();
-   
-    
-    $scope.authorize = function() {
-    if(Users.getCurrentUser() == null){
-        return false;
-    }else{
-        return true;
-    }
-  };
 
- function getProposals() {
+    // This function retrieves the proposals for the current user to display on 
+    // their profile.
+    function getProposals() {
 
-     var currentUser = Parse.User.current();
         var HikingProposal = Parse.Object.extend("HikingProposal");
         var query = new Parse.Query(HikingProposal);
-       
-     
- 
-        query.equalTo( "user", currentUser );
-         query.include("trail");
+        
+        query.equalTo( "user", $scope.user );
+        query.include("trail");
+        query.find({
+        success: function(results) {
+            $scope.proposals = results;       
+            $scope.$apply();
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+        });          
+    };
 
-    
-
-      query.find({
-    success: function(results) {
-  
-        $scope.proposals = results;       
-         $scope.$apply();
-
-},
-    error: function(error) {
-        console.log("Error: " + error.code + " " + error.message);
-    }
-});
-              
-                 
-};
-
-getProposals();
+    getProposals();
 
 })
 
