@@ -349,6 +349,29 @@ angular.module('starter.controllers', ['ngCordova'])
         }
         });          
     };
+    
+    $scope.deleteItem= function(proposal) {
+        
+        var HikingProposal = Parse.Object.extend("HikingProposal");
+        var query = new Parse.Query(HikingProposal);
+
+        query.get(proposal.id,{
+        success: function(results) {
+            results.destroy({});
+            getProposals();
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+        });  
+    };
+    
+    $scope.doRefresh = function() {
+        $http.get('/new-items')
+            .success(function(newItems) {
+        
+        })
+    }
 
     getProposals();
 

@@ -1,4 +1,4 @@
-<ion-view view-title="Profile" hide-back-button="true" >
+<ion-view cache-view="false" view-title="Profile" hide-back-button="true" >
 
   <ion-nav-buttons side="right">
     <a class="button button-small" ng-click="logOut()">Log out</a>
@@ -20,6 +20,9 @@
         <ion-item  ng-repeat="proposal in proposals track by $index" href="#/tab/trails/{{proposal.get('trail').id}}" >  
           <h3>{{proposal.get("trail").get("Name")}}</h3>
           <p>Date Added: {{proposal.get("date").toString().substring(0, 15)}} </p>
+          <ion-option-button class="button-assertive" ng-click="deleteItem(proposal)">
+            Delete
+          </ion-option-button>
         </ion-item>
       </ion-list>
     </div>
