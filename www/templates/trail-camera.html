@@ -1,17 +1,26 @@
-<ion-view view-title="Camera Functions" ng-controller="CameraCtrl as controller">
+<ion-view view-title="Camera Functions" ng-controller="TrailDetailCtrl as controller">
   <ion-content class="padding">
     
-        <button class="button button-full button-positive" ng-click="takePhoto()">
-            Take Photo
+    <div class="item button-bar" ng-show="!authorize()">
+        <button class="button button-small button-outline button-dark icon-center ion-camera" ng-click="takeTrailPhoto()" >
+            Take image
         </button>
-       
-        <center>
-        <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}" width="300" height="375"></center>
 
-         <button class="button button-full button-assertive" ng-click="choosePhoto()">
-            Choose Photo
+        <button class="button button-small button-outline button-dark icon-center ion-camera" ng-click="chooseTrailPhoto()">
+            Select image
         </button>
-   
-  
+    </div>
+    
+    <div ng-show="!authorize()">
+       <a class="button button-block button-positive" href="#/tab/signin">Please Login to Add a Comment</a>
+    </div>
+    
+    <div ng-show="imgURI !== undefined">
+        <a class="button button-block button-positive" ng-click="saveTrailPhoto()">save</a>
+    </div> 
+
+    <div class="item item-image">
+        <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+    </div>
   </ion-content>
 </ion-view>

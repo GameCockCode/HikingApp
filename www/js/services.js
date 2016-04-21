@@ -93,18 +93,16 @@ angular.module('starter.services', [])
         hikingProposal.set("trail", selectedtrail);
         hikingProposal.set("date", new Date());
         
-        
-
         hikingProposal.save(null,{
-                            success: function(propose) {
-                                alert("This trail has been added to your list!");
-                                console.log('New Trail created with name: ' + hikingProposal.id);
-                            },
-                            error: function(propose, error) {
-                                alert("Oops! Looks like something went wrong. Please try again..");
-                                console.log('Failed to create new object, with error code: ' + error.message);
-                            }
-                        });
+            success: function(propose) {
+                alert("This trail has been added to your list!");
+                console.log('New Trail created with name: ' + hikingProposal.id);
+            },
+            error: function(propose, error) {
+                alert("Oops! Looks like something went wrong. Please try again..");
+                console.log('Failed to create new object, with error code: ' + error.message);
+            }
+        });
         
     },
     get: function(trailId) {
@@ -122,7 +120,7 @@ angular.module('starter.services', [])
         var geopoint = new Parse.GeoPoint({latitude: latitude, longitude: longitude});
         
         if(currentUser==null){
-          console.log(" cannot find user obj");
+            console.log(" cannot find user obj");
         }
 
         var file = new Parse.File("myfile.zzz", { base64: imagedata });
@@ -135,39 +133,70 @@ angular.module('starter.services', [])
         trail.set("city", city);
         trail.set("start_location", geopoint);
 
- 
-        if (imagedata !== undefined){
-            file.save({ success: function() {
-                
-            },
-            error: function(file, error) {
-              alert('Failed to create new object, with error code: ' + error.message);
-            }
-        }).then(function(thefile) {
-        // The file has been saved to Parse.
-        trail.set("picture", thefile);
-        trail.save(null,{
-                            success: function(gameScore) {
-                                alert('New Trail created with name: ' + trail.Name);
-                            },
-                            error: function(gameScore, error) {
-                                alert('Failed to create new object, with error code: ' + error.message);
-                            }
-                        });
-        });
-        }  else {
-            trail.save(null, {
-          success: function(gameScore) {
-           
-            alert('New Trail created with name: ' + trail.Name);
-            },
-          error: function(gameScore, error) {
-             
-              alert('Failed to create new object, with error code: ' + error.message);
-          }
-          });
 
-          }
+        if (imagedata !== undefined){
+            file.save({ success: function() {  
+                },
+                error: function(file, error) {
+                alert('Failed to create new object, with error code: ' + error.message);
+                }
+            }).then(function(thefile) {
+            // The file has been saved to Parse.
+                trail.set("picture", thefile);
+                trail.save(null,{
+                    success: function(gameScore) {
+                        alert('New Trail created with name: ' + trail.Name);
+                    },
+                    error: function(gameScore, error) {
+                        alert('Failed to create new object, with error code: ' + error.message);
+                    }
+                });
+            });
+        } 
+        else {
+            trail.save(null, {
+                success: function(gameScore) {
+                    alert('New Trail created with name: ' + trail.Name);
+                },
+                error: function(gameScore, error) { 
+                alert('Failed to create new object, with error code: ' + error.message);
+                }
+            });
+        }
+    },
+    addtrailphoto: function(trailObject, imagedata){     
+        
+        var currentUser = Parse.User.current();
+        var Trail = Parse.Object.extend("TrailPhotos");
+        var file = new Parse.File("myfile.png", { base64: imagedata });
+        var trail = new Trail();
+        trail.set("trail", trailObject);
+        trail.set("user", currentUser);
+        if (trail === undefined || currentUser === undefined) {
+            alert("Trail or User Undefined");
+        }
+        if (imagedata !== undefined){
+            file.save({ success: function() { 
+                    // file saved to users phone 
+                },
+                error: function(file, error) {
+                    alert('Failed to create new object, with error code: ' + error.message);
+                }
+            }).then(function(thefile) {
+                trail.set("picture", thefile);
+                trail.save(null,{
+                    success: function(gameScore) {
+                        alert('New Trail created with name: ' + trail.get("user").get("Name"));
+                    },
+                    error: function(gameScore, error) {
+                        alert('Failed to create new object, with error code: ' + error.message);
+                    }
+                });
+            });
+        } 
+        else {
+            alert('Failed to create new object, with error code:');
+        }
     }
   };
 });

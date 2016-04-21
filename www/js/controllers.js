@@ -1,4 +1,5 @@
 angular.module('starter.controllers', ['ngCordova'])
+
 .controller('LoginCtrl', function($scope, $state, Users) {
    $scope.authorize = function() {
     if(Users.getCurrentUser() == null){
@@ -62,134 +63,54 @@ angular.module('starter.controllers', ['ngCordova'])
  
 })
 
-.controller('CameraCtrl', function($scope, $cordovaCamera) {
-
-   $scope.takePhoto = function () {
-                  var options = {
-                    quality: 50,
-                    destinationType: Camera.DestinationType.DATA_URL,
-                    sourceType: Camera.PictureSourceType.CAMERA,
-                    allowEdit: false,
-                    encodingType: Camera.EncodingType.JPEG,
-                    targetWidth: 300,
-                    targetHeight: 375,
-                    popoverOptions: CameraPopoverOptions,
-                    saveToPhotoAlbum: true,
-                    correctOrientation:true
-                };
-   
-                    $cordovaCamera.getPicture(options).then(function (imageData) {
-                        $scope.imgURI = "data:image/jpeg;base64," + imageData;                       
-                    }, function (err) {
-                        // An error occured. Show a message to the user
-                    });
-                }
-                
-                $scope.choosePhoto = function () {
-                  var options = {
-                    quality: 75,
-                    destinationType: Camera.DestinationType.DATA_URL,
-                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
-                    allowEdit: false,
-                    encodingType: Camera.EncodingType.JPEG,
-                    targetWidth: 300,
-                    targetHeight: 300,
-                    popoverOptions: CameraPopoverOptions,
-                    saveToPhotoAlbum: true
-                };
-   
-                    $cordovaCamera.getPicture(options).then(function (imageData) {
-                        $scope.imgURI = "data:image/jpeg;base64," + imageData;                      
-                    }, function (err) {
-                        // An error occured. Show a message to the user
-                    });
-                }
-
-})
-
-
 .controller('TrailsCtrl', function($scope, $state, Trails, Users) {
 
-     var self=this;
+    var self=this;
+     
+    function getDataFromParse() {
 
-     function getDataFromParse() {
+        var TrailObject = Parse.Object.extend("Trail");
+        var query = new Parse.Query(TrailObject);
 
-     var TrailObject = Parse.Object.extend("Trail");
-     var query = new Parse.Query(TrailObject);
+        if (self.parameter == null || self.parameter == ''){;
 
-     if (self.parameter == null || self.parameter == ''){;
-
-     } else {
-        query.contains( "Name", self.parameter );
-
-     }
-
-      query.find({
-    success: function(results) {
-    var temptrails = [];
-
-   /*  for (var i = 0; i < results.length; i++) {
-            temptrails.push(results[i]);
-            
+        } else {
+            query.contains( "Name", self.parameter );
         }
-        $scope.trails = temptrails;*/
-        $scope.trails = results;
-        Trails.setTrails(results);
-         $scope.$apply();
 
-},
-    error: function(error) {
-        console.log("Error: " + error.code + " " + error.message);
-    }
-});
-              
-                 
-};
-
-
- 
-  //$scope.trails = Trails.all();
-  $scope.trails = getDataFromParse();
-  
-  $scope.authorize = function() {
-    if(Users.getCurrentUser() == null){
-        return false;
-    }else{
-        return true;
-    }
-  };
-
-
-   $scope.addToProposal=function (selectedtrail) {
-      
-            Trails.addToProposal(selectedtrail);
-              $scope.$apply();
-          
-           
-       
+        query.find({
+            success: function(results) {
+                var temptrails = [];
+                $scope.trails = results;
+                Trails.setTrails(results);
+                $scope.$apply();
+            },
+            error: function(error) {
+                console.log("Error: " + error.code + " " + error.message);
+            }
+        });
     };
 
-
- $scope.keyupprocess = function () {
-          // console.log( "Handler for .keyup() called." );
-          delay(function(){
-            getDataFromParse();
-              
-          
-            
-              // $scope.search();
-
-              //$scope.$apply();
-              //$state.go('tab.trails');
-             
-            }, 500 );
-
-          
-   };
-
-
+    $scope.trails = getDataFromParse();
   
+    $scope.authorize = function() {
+        if(Users.getCurrentUser() == null){
+            return false;
+        }else{
+            return true;
+        }
+    };
 
+    $scope.addToProposal=function (selectedtrail) {
+        Trails.addToProposal(selectedtrail);
+        $scope.$apply();
+    };
+
+    $scope.keyupprocess = function () {
+        delay(function(){
+            getDataFromParse(); 
+        }, 500 );
+    };
 })
 
 .controller('AddTrailCtrl', function($scope,$state,Trails, $ionicPopup , $cordovaCamera) {
@@ -266,16 +187,14 @@ angular.module('starter.controllers', ['ngCordova'])
             self.city = '';
             self.latitude = null;
             self.longitude = null;
-
-          //  $scope.trails = $scope.getDataFromParse();
-
+            
             $state.go("tab.trails");
         }
     };
 
 })
 
-.controller('TrailDetailCtrl', function($scope, $state, $stateParams, $http, Trails, Comments, Users) {
+.controller('TrailDetailCtrl', function($scope, $state, $stateParams, $http, $cordovaCamera, Trails, Comments, Users) {
     
     function getCommentData(){
         var comments = [];
@@ -296,6 +215,8 @@ angular.module('starter.controllers', ['ngCordova'])
         });
     }
     getCommentData();
+    
+    
     $scope.trail = Trails.get($stateParams.trailId);
     $scope.user = Users.getCurrentUser();
     var self=this;
@@ -309,7 +230,7 @@ angular.module('starter.controllers', ['ngCordova'])
         $state.go("tab.trails");
     }
 
-     $scope.addToProposal=function (selectedtrail) {
+    $scope.addToProposal=function (selectedtrail) {
       
             Trails.addToProposal(selectedtrail);                 
            
@@ -317,12 +238,58 @@ angular.module('starter.controllers', ['ngCordova'])
     };
     
     $scope.authorize = function() {
-    if(Users.getCurrentUser() == null){
-        return false;
-    }else{
-        return true;
+        if(Users.getCurrentUser() == null){
+            return false;
+        }else{
+            return true;
+        }
+    };
+    
+    $scope.takeTrailPhoto = function () {
+        var options = {
+            quality: 75,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.CAMERA,
+            allowEdit: false,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 300,
+            targetHeight: 300,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: true,
+            correctOrientation:true
+        };
+
+        $cordovaCamera.getPicture(options).then(function (imageData) {
+            $scope.imgURI = "data:image/jpeg;base64," + imageData;
+                        
+        }, function (err) {
+            // An error occured. Show a message to the user
+        });
     }
-  };
+                
+    $scope.chooseTrailPhoto = function () {
+        var options = {
+            quality: 75,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+            allowEdit: false,
+            encodingType: Camera.EncodingType.JPEG,
+            targetWidth: 300,
+            targetHeight: 300,
+            popoverOptions: CameraPopoverOptions,
+            saveToPhotoAlbum: true
+        };
+        $cordovaCamera.getPicture(options).then(function (imageData) {
+            $scope.imgURI = "data:image/jpeg;base64," + imageData;
+        }, function (err) {
+            // An error occured. Show a message to the user
+        });
+    }
+    
+    $scope.saveTrailPhoto = function () {
+        console.log("addtrailphoto");
+        Trails.addtrailphoto($scope.trail, $scope.imgURI, $scope.user);
+    };
 })
 
 .controller('ProfileCtrl', function($scope, $state, $stateParams, Trails, Users) {

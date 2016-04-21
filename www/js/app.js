@@ -114,7 +114,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     views: {
       'tab-trails': {
         templateUrl: 'templates/trail-camera.html',
-        controller: 'CameraCtrl'
+        controller: 'TrailDetailCtrl'
       }
     }
   })
