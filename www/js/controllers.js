@@ -365,13 +365,7 @@ angular.module('starter.controllers', ['ngCordova'])
         }
         });  
     };
-    
-    $scope.doRefresh = function() {
-        $http.get('/new-items')
-            .success(function(newItems) {
-        
-        })
-    }
+ 
 
     getProposals();
 
