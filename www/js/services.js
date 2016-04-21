@@ -77,126 +77,142 @@ angular.module('starter.services', [])
 .factory('Trails', function() {
 
     var trails = [];
+    var photos = [];
 
     return {
-    all: function() {
-        return trails;
-    },
-    setTrails: function(newtrails) {
-        trails = newtrails;
-    },
-    addToProposal: function(selectedtrail) {
-        var currentUser = Parse.User.current();
-        var HikingProposal = Parse.Object.extend("HikingProposal");
-        var hikingProposal = new HikingProposal();
-        hikingProposal.set("user", currentUser);
-        hikingProposal.set("trail", selectedtrail);
-        hikingProposal.set("date", new Date());
-        
-        hikingProposal.save(null,{
-            success: function(propose) {
-                alert("This trail has been added to your list!");
-                console.log('New Trail created with name: ' + hikingProposal.id);
-            },
-            error: function(propose, error) {
-                alert("Oops! Looks like something went wrong. Please try again..");
-                console.log('Failed to create new object, with error code: ' + error.message);
-            }
-        });
-        
-    },
-    get: function(trailId) {
-        for (var i = 0; i < trails.length; i++) {
-            if (trails[i].id === trailId) {
-                return trails[i];
-            }
-        }
-        return null;
-    },
-    addtrail: function(trailName,trailLength,hikeHours,state,zip,city,longitude,latitude, imagedata){     
- 
-        var currentUser = Parse.User.current();
-        var Trail = Parse.Object.extend("Trail");
-        var geopoint = new Parse.GeoPoint({latitude: latitude, longitude: longitude});
-        
-        if(currentUser==null){
-            console.log(" cannot find user obj");
-        }
-
-        var file = new Parse.File("myfile.zzz", { base64: imagedata });
-        var trail = new Trail();
-        trail.set("Name", trailName);
-        trail.set("length", trailLength);
-        trail.set("hike_hours", hikeHours);
-        trail.set("state", state);
-        trail.set("zip_code", zip);
-        trail.set("city", city);
-        trail.set("start_location", geopoint);
-
-
-        if (imagedata !== undefined){
-            file.save({ success: function() {  
+        all: function() {
+            return trails;
+        },
+        setTrails: function(newtrails) {
+            trails = newtrails;
+        },
+        addToProposal: function(selectedtrail) {
+            var currentUser = Parse.User.current();
+            var HikingProposal = Parse.Object.extend("HikingProposal");
+            var hikingProposal = new HikingProposal();
+            hikingProposal.set("user", currentUser);
+            hikingProposal.set("trail", selectedtrail);
+            hikingProposal.set("date", new Date());
+            
+            hikingProposal.save(null,{
+                success: function(propose) {
+                    alert("This trail has been added to your list!");
+                    console.log('New Trail created with name: ' + hikingProposal.id);
                 },
-                error: function(file, error) {
-                alert('Failed to create new object, with error code: ' + error.message);
+                error: function(propose, error) {
+                    alert("Oops! Looks like something went wrong. Please try again..");
+                    console.log('Failed to create new object, with error code: ' + error.message);
                 }
-            }).then(function(thefile) {
-            // The file has been saved to Parse.
-                trail.set("picture", thefile);
-                trail.save(null,{
+            });
+            
+        },
+        get: function(trailId) {
+            for (var i = 0; i < trails.length; i++) {
+                if (trails[i].id === trailId) {
+                    return trails[i];
+                }
+            }
+            return null;
+        },
+        addtrail: function(trailName,trailLength,hikeHours,state,zip,city,longitude,latitude, imagedata){     
+    
+            var currentUser = Parse.User.current();
+            var Trail = Parse.Object.extend("Trail");
+            var geopoint = new Parse.GeoPoint({latitude: latitude, longitude: longitude});
+            
+            if(currentUser==null){
+                console.log(" cannot find user obj");
+            }
+
+            var file = new Parse.File("myfile.zzz", { base64: imagedata });
+            var trail = new Trail();
+            trail.set("Name", trailName);
+            trail.set("length", trailLength);
+            trail.set("hike_hours", hikeHours);
+            trail.set("state", state);
+            trail.set("zip_code", zip);
+            trail.set("city", city);
+            trail.set("start_location", geopoint);
+
+
+            if (imagedata !== undefined){
+                file.save({ success: function() {  
+                    },
+                    error: function(file, error) {
+                    alert('Failed to create new object, with error code: ' + error.message);
+                    }
+                }).then(function(thefile) {
+                // The file has been saved to Parse.
+                    trail.set("picture", thefile);
+                    trail.save(null,{
+                        success: function(gameScore) {
+                            alert('New Trail created with name: ' + trail.Name);
+                        },
+                        error: function(gameScore, error) {
+                            alert('Failed to create new object, with error code: ' + error.message);
+                        }
+                    });
+                });
+            } 
+            else {
+                trail.save(null, {
                     success: function(gameScore) {
                         alert('New Trail created with name: ' + trail.Name);
                     },
-                    error: function(gameScore, error) {
-                        alert('Failed to create new object, with error code: ' + error.message);
-                    }
-                });
-            });
-        } 
-        else {
-            trail.save(null, {
-                success: function(gameScore) {
-                    alert('New Trail created with name: ' + trail.Name);
-                },
-                error: function(gameScore, error) { 
-                alert('Failed to create new object, with error code: ' + error.message);
-                }
-            });
-        }
-    },
-    addtrailphoto: function(trailObject, imagedata){     
-        
-        var currentUser = Parse.User.current();
-        var Trail = Parse.Object.extend("TrailPhotos");
-        var file = new Parse.File("myfile.png", { base64: imagedata });
-        var trail = new Trail();
-        trail.set("trail", trailObject);
-        trail.set("user", currentUser);
-        if (trail === undefined || currentUser === undefined) {
-            alert("Trail or User Undefined");
-        }
-        if (imagedata !== undefined){
-            file.save({ success: function() { 
-                    // file saved to users phone 
-                },
-                error: function(file, error) {
+                    error: function(gameScore, error) { 
                     alert('Failed to create new object, with error code: ' + error.message);
-                }
-            }).then(function(thefile) {
-                trail.set("picture", thefile);
-                trail.save(null,{
-                    success: function(gameScore) {
-                        alert('New Trail created with name: ' + trail.get("user").get("Name"));
-                    },
-                    error: function(gameScore, error) {
-                        alert('Failed to create new object, with error code: ' + error.message);
                     }
                 });
-            });
-        } 
-        else {
-            alert('Failed to create new object, with error code:');
+            }
+        },
+        allPhotos: function() {
+            return photos;
+        },
+        setPhotos: function(newphotos) {
+            photos = newphotos;
+        },
+        getPhotos: function(trailId) {
+            var trailphotos =[];
+            for (var i = 0; i < photos.length; i++) {
+                if (photos[i].get("trail").id === trailId) {
+                    trailphotos.push(photos[i]);
+                }
+            }
+            return trailphotos;
+        },
+        addtrailphoto: function(trailObject, imagedata){     
+            
+            var currentUser = Parse.User.current();
+            var Trail = Parse.Object.extend("TrailPhotos");
+            var file = new Parse.File("myfile.png", { base64: imagedata });
+            var trail = new Trail();
+            trail.set("trail", trailObject);
+            trail.set("user", currentUser);
+            if (trail === undefined || currentUser === undefined) {
+                alert("Trail or User Undefined");
+            }
+            if (imagedata !== undefined){
+                file.save({ success: function() { 
+                        // file saved to users phone 
+                    },
+                    error: function(file, error) {
+                        alert('Failed to create new object, with error code: ' + error.message);
+                    }
+                }).then(function(thefile) {
+                    trail.set("picture", thefile);
+                    trail.save(null,{
+                        success: function(gameScore) {
+                            alert('New Trail created with name: ' + trail.get("user").get("Name"));
+                        },
+                        error: function(gameScore, error) {
+                            alert('Failed to create new object, with error code: ' + error.message);
+                        }
+                    });
+                });
+            } 
+            else {
+                alert('Failed to create new object, with error code:');
+            }
         }
-    }
-  };
+    };
 });

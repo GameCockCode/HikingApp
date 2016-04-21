@@ -196,15 +196,29 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('TrailDetailCtrl', function($scope, $state, $stateParams, $http, $cordovaCamera, Trails, Comments, Users) {
     
+    function getPhotoData(){
+        var photos = [];
+        var PhotoObject = Parse.Object.extend("TrailPhotos");
+        var query = new Parse.Query(PhotoObject);
+        query.find({
+        success: function(results) {
+            Trails.setPhotos(results);
+            $scope.photos = Trails.getPhotos($stateParams.trailId);
+            $scope.$apply();
+        },
+        error: function(error) {
+            console.log("Error: " + error.code + " " + error.message);
+        }
+        });
+    }
+    getPhotoData();
+
     function getCommentData(){
         var comments = [];
         var CommentObject = Parse.Object.extend("Comment");
         var query = new Parse.Query(CommentObject);
         query.find({
         success: function(results) {
-           /* for (var i = 0; i < results.length; i++) {
-                comments.push(results[i]);
-            }*/
             Comments.setComments(results);
             $scope.comments = Comments.get($stateParams.trailId);
             $scope.$apply();
@@ -287,8 +301,10 @@ angular.module('starter.controllers', ['ngCordova'])
     }
     
     $scope.saveTrailPhoto = function () {
-        console.log("addtrailphoto");
         Trails.addtrailphoto($scope.trail, $scope.imgURI, $scope.user);
+        getPhotoData();
+        $scope.imgURI = undefined;
+        
     };
 })
 

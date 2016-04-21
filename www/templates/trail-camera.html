@@ -1,7 +1,7 @@
 <ion-view view-title="Camera Functions" ng-controller="TrailDetailCtrl as controller">
   <ion-content class="padding">
     
-    <div class="item button-bar" ng-show="!authorize()">
+    <div class="item button-bar" ng-show="authorize()">
         <button class="button button-small button-outline button-dark icon-center ion-camera" ng-click="takeTrailPhoto()" >
             Take image
         </button>
@@ -12,7 +12,7 @@
     </div>
     
     <div ng-show="!authorize()">
-       <a class="button button-block button-positive" href="#/tab/signin">Please Login to Add a Comment</a>
+       <a class="button button-block button-positive" href="#/tab/signin">Please login to add your Trail Picture</a>
     </div>
     
     <div ng-show="imgURI !== undefined">
@@ -22,5 +22,13 @@
     <div class="item item-image">
         <img ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
     </div>
+    
+    <div id="CommentDiv">
+        <div ng-repeat="photo in photos.slice().reverse()">    
+            <div class="item">
+                <img src="{{photo.get('picture').url()}}">
+            </div>
+        </div>  
+    </div> 
   </ion-content>
 </ion-view>
